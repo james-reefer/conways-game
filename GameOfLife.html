@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <style>
+      
+      table { 
+        border-collapse: separate;
+        border-spacing: 0px; 
+      }
+      td {
+        border:1px solid black;
+	      width:5px;
+      }
+      tr {
+      	height:10px;
+      }
+      
+      td.Alive {
+        background-color: yellow;
+      }
+     
+    </style>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="GameOfLife.js" type="text/javascript" ></script>
+    <script type="text/javascript">
+          
+      //Build Size by Size table
+      $(document).ready( function () {
+
+        var size = 50;
+
+        var board = BuildBoard(size);
+        
+        
+        var table = $("#board_table");
+        
+        BuildTable(table, board);
+        
+        UpdateTable(table, board);        
+        
+        $("#tick").click( function () {
+          
+          board = Tick(board);
+          UpdateTable(table, board );
+          
+        });
+        
+        $("#size_change").click( function () {
+          
+          size = $("#input").val();
+          
+          table.empty();
+          
+          var board = BuildBoard(size);
+
+          BuildTable(table, board);
+          UpdateTable(table, board);                
+          
+        });
+        
+        //Flop colors and states on cell click
+        $("td").click( function () {
+          
+                   
+          var splitString = $(this).attr("id").split('-');
+          var cell = board[splitString[1]][splitString[3]];
+          
+          if( cell.State === ALIVE ) {
+            
+            cell.State = DEAD;
+            $(this).css("background-color","blue");
+            
+          } else { 
+            
+            cell.State = ALIVE;
+            $(this).css("background-color","yellow"); 
+            
+          }
+              
+        });
+        
+      });
+          
+    </script>
+    
+    
+  </head>
+  <body>
+
+    <button id="go">Go</button>
+    <button id="stop">Stop</button>
+    <table id="board_table" ><h2>Conway's Game of Life!</h2><button id="tick">Tick</button> </table>
+    
+    <div><button id="size_change">Change Size</button><input id="input" /></div>
+    
+
+  </body>
+
+</html>
+
